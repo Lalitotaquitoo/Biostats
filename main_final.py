@@ -386,6 +386,7 @@ class Movement_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Movimiento")
+        self.setGeometry(100, 100, 800, 600)
         self.current_camera_index = 0
         self.config_window = None
 
@@ -519,7 +520,7 @@ class Movement_window(QWidget):
     def open_config(self):
         if self.config_window is None:
             self.config_window = Configure_window()
-        self.config_window.showFullScreen()
+        self.config_window.show()
 
 # --------------------------------------------------------------------------- #
 # VENTANA: MENÚ DE DOMÓTICA
@@ -577,22 +578,22 @@ class Domotica_window(QWidget):
     def open_ligth(self):
         if self.light_window is None:
             self.light_window = Light_window()
-        self.light_window.showFullScreen()
+        self.light_window.show()
     
     def open_yt(self):
         if self.yt_window is None:
             self.yt_window = YT_window()
-        self.yt_window.showFullScreen()
+        self.yt_window.show()
     
     def open_emergency(self):
         if self.emergency_window is None:
             self.emergency_window = Emergency_window()
-        self.emergency_window.showFullScreen()
+        self.emergency_window.show()
     
     def open_weather(self):
         if self.weather_window is None:
             self.weather_window = Weather_window()
-        self.weather_window.showFullScreen()
+        self.weather_window.show()
 
 # --------------------------------------------------------------------------- #
 # VENTANA PRINCIPAL
@@ -601,6 +602,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sillodromo Lions")
+        self.resize(1000, 600)
         self.setWindowIcon(QIcon('assets/Logo.jpeg'))
         
         # --- Hilo para detectar doble clic ---
@@ -642,12 +644,12 @@ class MainWindow(QMainWindow):
     def open_domotica(self):
         if self.domotica_window is None:
             self.domotica_window = Domotica_window()
-        self.domotica_window.showFullScreen()
+        self.domotica_window.show()
 
     def open_movimiento(self):
         # Siempre crea una nueva instancia para reiniciar los hilos de Arduino y YOLO
         self.movimiento_window = Movement_window()
-        self.movimiento_window.showFullScreen()
+        self.movimiento_window.show()
 
     def closeEvent(self, event):
         print("Cerrando aplicación principal...")
@@ -670,5 +672,5 @@ if __name__ == '__main__':
         print("Advertencia: No se encontró 'styles.css'. Se usarán los estilos por defecto.")
 
     window = MainWindow()
-    window.showMaximized() 
+    window.show() 
     sys.exit(app.exec())
