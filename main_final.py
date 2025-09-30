@@ -447,6 +447,7 @@ class Movement_window(QWidget):
             if key == 's': # Añadir cambio de cámara al botón de reversa
                  button.pressed.connect(self.cambiar_camara_auto)
             layout.addWidget(button, pos[0], pos[1], alignment=Qt.AlignmentFlag.AlignCenter)
+            
 
         # Botones de movimiento (diagonales)
         for keys, (icon_path, pos) in diagonal_buttons_info.items():
