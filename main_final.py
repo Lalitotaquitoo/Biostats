@@ -461,8 +461,10 @@ class Movement_window(QWidget):
             button.setProperty("class", "movement_button")
             button.pressed.connect(lambda k=key: self.evento_tecla_signal.emit(k, True))
             button.released.connect(lambda k=key: self.evento_tecla_signal.emit(k, False))
-            if key == 's': # Añadir cambio de cámara al botón de reversa
-                 button.pressed.connect(self.cambiar_camara_auto)
+            if key == 's':
+                button.pressed.connect(self.cambiar_a_camara_trasera)
+            elif key == 'w':
+                button.pressed.connect(self.volver_a_camara_frontal)
             layout.addWidget(button, pos[0], pos[1], alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Botones de movimiento (diagonales)
@@ -474,9 +476,10 @@ class Movement_window(QWidget):
             t1, t2 = keys[0], keys[1]
             button.pressed.connect(lambda t1=t1, t2=t2: self.presionar_dos_teclas(t1, t2))
             button.released.connect(lambda t1=t1, t2=t2: self.liberar_dos_teclas(t1, t2))
-            if 's' in keys: # Añadir cambio de cámara a los botones de reversa
-                 button.pressed.connect(self.cambiar_camara_auto)
-            layout.addWidget(button, pos[0], pos[1], alignment=Qt.AlignmentFlag.AlignCenter)
+            if 's' in keys: # Para 'sa' y 'sd'
+                button.pressed.connect(self.cambiar_a_camara_trasera)
+            elif 'w' in keys: # Para 'wa' y 'wd'
+                button.pressed.connect(self.volver_a_camara_frontal)
 
         main_layout.addLayout(layout)
 
@@ -503,11 +506,18 @@ class Movement_window(QWidget):
             print(f"Error al actualizar frame: {e}")
 
     @pyqtSlot()
-    def cambiar_camara_auto(self):
-        self.current_camera_index = (self.current_camera_index + 1) % 2
-        print(f"Solicitando cambio a cámara {self.current_camera_index}")
-        self.cambiar_camara_signal.emit(self.current_camera_index)
-
+    def cambiar_a_camara_trasera(self):
+        if self.current_camera_index != 1:
+            self.current_camera_index = 1
+            print(f"Cambiando a cámara trasera (índice {self.current_camera_index})")
+            self.cambiar_camara_signal.emit(self.current_camera_index)
+    @pyqtSlot()
+    def volver_a_camara_frontal(self):
+        if self.current_camera_index != 0:
+            self.current_camera_index = 0
+            print(f"Volviendo a cámara frontal (índice {self.current_camera_index})")
+            self.cambiar_camara_signal.emit(self.current_camera_index)
+        
     def volver(self):
         print("Cerrando ventana de movimiento...")
         self.yolo_thread.stop()
