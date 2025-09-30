@@ -1,3 +1,13 @@
+import sys
+import cv2
+import numpy as np
+import pyautogui
+import time
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
+                             QWidget, QPushButton, QVBoxLayout, QToolButton)
+from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot, QObject
+from PyQt6.QtGui import QPixmap, QImage, QIcon
+
 class ClickWorker(QObject):
     """
     Worker que monitorea la posición del puntero y hace clic si permanece

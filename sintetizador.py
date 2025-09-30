@@ -1,3 +1,12 @@
+import sys
+import cv2
+import numpy as np
+import pyttsx3
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
+                             QWidget, QPushButton, QVBoxLayout, QToolButton)
+from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot, QObject
+from PyQt6.QtGui import QPixmap, QImage, QIcon
+
 class SintetizadorVoz:
     """
     Clase corregida para manejar el motor de pyttsx3.
@@ -8,7 +17,7 @@ class SintetizadorVoz:
         # El motor ya no se inicializa aquí.
         pass
 
-    def hablar(self, texto: str, velocidad: int = 90) -> None:
+    def hablar(self, texto: str, velocidad: int = 150) -> None:
         # 1. Se crea una instancia nueva y limpia del motor CADA VEZ.
         motor = pyttsx3.init()
         motor.setProperty('volume', 1.0)

@@ -1,3 +1,13 @@
+import sys
+import cv2
+import numpy as np
+import serial
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
+                             QWidget, QPushButton, QVBoxLayout, QToolButton)
+from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot, QObject
+from PyQt6.QtGui import QPixmap, QImage, QIcon
+
+
 PUERTO_SERIAL = 'COM3'
 BAUD_RATE = 9600
 POSICION_NEUTRA = 128

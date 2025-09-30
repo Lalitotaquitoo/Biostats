@@ -1,3 +1,12 @@
+import sys
+import cv2
+import numpy as np
+
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
+                             QWidget, QPushButton, QVBoxLayout, QToolButton)
+from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot
+from PyQt6.QtGui import QPixmap, QImage, QIcon
+from ultralytics import YOLO
 class YoloThread(QThread):
     """
     Hilo para procesar el video de la cámara con el modelo YOLOv8 sin
