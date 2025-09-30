@@ -1,0 +1,126 @@
+QWidget{
+    background-color: #e6e8ed;
+    color: #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+.main_button {
+    border-radius: 13px;
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px;
+    color: #1E1E1E;
+    font-family: 'Krona One', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.main_button:hover {
+    background-color: #bcbcbc;
+}
+
+.header_button {
+    border-radius: 13px;
+    background-color: #FFFFFF;
+    margin-left: 10px;
+    padding: 0px, 5px;
+}
+
+.header_button:hover {
+    background-color: #bcbcbc;
+}
+
+.movement_button {
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px;
+}
+
+.movement_button:hover {
+    background-color: #bcbcbc;
+}
+
+.h1_label {
+    font-family: 'Krona One', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.h2_label {
+    font-family: 'Krona One', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+} 
+
+.config_button {
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px;
+    color: #1E1E1E;
+    font-family: 'Krona One', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.config_button:hover {
+    background-color: #bcbcbc;
+}
+
+.domotica_button {
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    margin: 10px;
+    padding: 10px;
+
+}
+
+.domotica_button:hover {
+    background-color: #bcbcbc;
+}
+
+.emergency_button {
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    margin: 10px;
+    padding: 10px;
+    color: black;
+}
+
+.emergency_button:hover {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+
+.yt_button {
+    border-radius: 15px;
+    background-color: #FFFFFF;
+    margin: 10px;
+    padding: 10px;
+    color: #1E1E1E;
+    font-family: 'Krona One', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.yt_button:hover {
+    background-color: #bcbcbc;
+}
+
+.ligth_button {
+    border-radius: 15px;
+    background-color: #FFFFFF;
+    margin: 10px;
+    padding: 10px;
+    color: #1E1E1E;
+    font-family: 'Krona One', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.ligth_button:hover {
+    background-color: #bcbcbc;
+}
