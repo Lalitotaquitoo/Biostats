@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout,
                              QWidget, QPushButton, QVBoxLayout, QToolButton)
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot, QObject
 from PyQt6.QtGui import QPixmap, QImage, QIcon
-
+from pynput import keyboard
 
 PUERTO_SERIAL = 'COM3'
 BAUD_RATE = 9600
