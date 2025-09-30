@@ -5,7 +5,7 @@ import numpy as np
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
                              QWidget, QPushButton, QVBoxLayout, QToolButton, QHBoxLayout)
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot
-from PyQt6.QtGui import QPixmap, QImage, QIcon
+from PyQt6.QtGui import QPixmap, QImage, QIcon, QGuiApplication
 
 # --------------------------------------------------------------------------- #
 # Importación de Módulos Locales
@@ -24,6 +24,15 @@ class Configure_window(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Configuración")
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
         layout = QGridLayout()
         layout.setSpacing(0)
         self.setLayout(layout)
@@ -112,6 +121,15 @@ class Light_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Luz")
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
         
         # --- Hilo para síntesis de voz ---
         self.voz_thread = QThread()
@@ -185,6 +203,15 @@ class YT_window(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("YouTube")
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
 
         # --- Hilo para síntesis de voz ---
         self.voz_thread = QThread()
@@ -246,6 +273,15 @@ class Emergency_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Emergencia")
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
 
         # --- Hilo para síntesis de voz ---
         self.voz_thread = QThread()
@@ -303,6 +339,15 @@ class Weather_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Clima y hora")
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
         
         # --- Hilo para síntesis de voz ---
         self.voz_thread = QThread()
@@ -386,7 +431,16 @@ class Movement_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Movimiento")
-        self.setGeometry(100, 100, 800, 600)
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.55)
+
+        self.setGeometry(0, 250, window_width, window_height)
+
         self.current_camera_index = 0
         self.config_window = None
 
@@ -413,7 +467,7 @@ class Movement_window(QWidget):
         # --- Header ---
         header_layout = QGridLayout()
         self.back_button = QPushButton(QIcon('assets/header/back.png'), "")
-        self.back_button.setIconSize(QSize(60, 60))
+        self.back_button.setIconSize(QSize(80, 60))
         self.back_button.setProperty("class", "header_button")
         self.back_button.setFixedSize(100, 80)
         self.back_button.clicked.connect(self.volver)
@@ -435,7 +489,7 @@ class Movement_window(QWidget):
         
         # --- Video Label ---
         self.video_label = QLabel()
-        self.video_label.setFixedSize(600, 550)
+        self.video_label.setFixedSize(450, 350)
         self.video_label.setStyleSheet("background-color: black; border: 2px solid #555;")
         layout.addWidget(self.video_label, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -456,8 +510,8 @@ class Movement_window(QWidget):
         # Botones de movimiento (rectos)
         for key, (icon_path, pos) in buttons_info.items():
             button = QPushButton(QIcon(icon_path), "")
-            button.setIconSize(QSize(150, 150))
-            button.setFixedSize(200, 150)
+            button.setIconSize(QSize(100, 100))
+            button.setFixedSize(300, 100)
             button.setProperty("class", "movement_button")
             button.pressed.connect(lambda k=key: self.evento_tecla_signal.emit(k, True))
             button.released.connect(lambda k=key: self.evento_tecla_signal.emit(k, False))
@@ -468,8 +522,8 @@ class Movement_window(QWidget):
         # Botones de movimiento (diagonales)
         for keys, (icon_path, pos) in diagonal_buttons_info.items():
             button = QPushButton(QIcon(icon_path), "")
-            button.setIconSize(QSize(150, 150))
-            button.setFixedSize(200, 150)
+            button.setIconSize(QSize(100, 100))
+            button.setFixedSize(300, 100)
             button.setProperty("class", "movement_button")
             t1, t2 = keys[0], keys[1]
             button.pressed.connect(lambda t1=t1, t2=t2: self.presionar_dos_teclas(t1, t2))
@@ -529,6 +583,16 @@ class Domotica_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Domotica")
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
+
         self.light_window = None
         self.yt_window = None
         self.emergency_window = None
@@ -602,8 +666,18 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sillodromo Lions")
-        self.resize(1000, 600)
+        self.setGeometry(0, 0, 1200, 550)
         self.setWindowIcon(QIcon('assets/Logo.jpeg'))
+        screen = QGuiApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        screen_width = geometry.width()
+        screen_height = geometry.height()
+
+        window_width = screen_width
+        window_height = int(screen_height * 0.70)
+
+        self.setGeometry(0, 250, window_width, window_height)
+
         
         # --- Hilo para detectar doble clic ---
         self.click_thread = QThread()
