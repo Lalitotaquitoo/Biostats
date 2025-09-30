@@ -1,57 +1,78 @@
-import sys
-import cv2
-import numpy as np
 import pyautogui
 import time
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
-                             QWidget, QPushButton, QVBoxLayout, QToolButton)
-from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot, QObject
-from PyQt6.QtGui import QPixmap, QImage, QIcon
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot
 
 class ClickWorker(QObject):
-    """
-    Worker que monitorea la posición del puntero y hace clic si permanece
-    en un área por un tiempo determinado. Se ejecuta en un hilo separado.
-    """
-    def __init__(self, tiempo_espera=2, tolerancia=20):
+    status_updated = pyqtSignal(str)
+    
+
+    def __init__(self, tiempo_espera=2, duracion_sostenido=3, tolerancia=20):
         super().__init__()
         self.tiempo_espera = tiempo_espera
+        self.duracion_sostenido = duracion_sostenido
         self.tolerancia = tolerancia
-        self.running = True
+        self._is_running = True
 
+    @pyqtSlot()
     def run(self):
-        """Contiene el bucle principal que se ejecutará en el hilo."""
-        print(f"Monitoreo de clics iniciado con una tolerancia de +/- {self.tolerancia} píxeles.")
+        """
+        Bucle principal del worker que se ejecuta en el hilo.
+        """
+        self.status_updated.emit(f"Monitoreo de clics iniciado.")
+       
         try:
-            posicion_ancla = pyautogui.position()
-            tiempo_inicio_area = time.time()
-            x1, x2 = posicion_ancla.x - self.tolerancia, posicion_ancla.x + self.tolerancia
-            y1, y2 = posicion_ancla.y - self.tolerancia, posicion_ancla.y + self.tolerancia
+            pos_anchor = pyautogui.position()
+            time_anchor = time.time()
+            x1 = pos_anchor.x - self.tolerancia
+            x2 = pos_anchor.x + self.tolerancia
+            y1 = pos_anchor.y - self.tolerancia
+            y2 = pos_anchor.y + self.tolerancia
 
-            while self.running:
-                posicion_actual = pyautogui.position()
-                esta_en_area = (x1 <= posicion_actual.x <= x2 and
-                                y1 <= posicion_actual.y <= y2)
+            while self._is_running:
+                current_pos = pyautogui.position()
+               
+                is_in_area = (x1 <= current_pos.x <= x2 and y1 <= current_pos.y <= y2)
 
-                if esta_en_area:
-                    if time.time() - tiempo_inicio_area >= self.tiempo_espera:
-                        pyautogui.click()
-                        print(f"\nClic realizado en {posicion_actual} por permanecer en el área.")
-                        posicion_ancla = posicion_actual
-                        tiempo_inicio_area = time.time()
-                        x1, x2 = posicion_ancla.x - self.tolerancia, posicion_ancla.x + self.tolerancia
-                        y1, y2 = posicion_ancla.y - self.tolerancia, posicion_ancla.y + self.tolerancia
+                if is_in_area:
+                    if time.time() - time_anchor >= self.tiempo_espera:
+                        self.status_updated.emit(f"Activando clic sostenido en {current_pos}...")
+                       
+                        pyautogui.mouseDown(button='left')
+                       
+                        # Bucle para la espera, permite una interrupción más rápida
+                        start_hold_time = time.time()
+                        while time.time() - start_hold_time < self.duracion_sostenido:
+                            if not self._is_running:
+                                break
+                            time.sleep(0.1)
+                           
+                        pyautogui.mouseUp(button='left')
+                       
+                        if self._is_running:
+                            self.status_updated.emit("Clic liberado. Reiniciando ancla.")
+                       
+                        # Reinicia el ancla para evitar repeticiones inmediatas
+                        pos_anchor = pyautogui.position()
+                        time_anchor = time.time()
+                        x1, x2 = pos_anchor.x - self.tolerancia, pos_anchor.x + self.tolerancia
+                        y1, y2 = pos_anchor.y - self.tolerancia, pos_anchor.y + self.tolerancia
                 else:
-                    print(f"Nueva área de anclaje centrada en {posicion_actual}", end='\r')
-                    posicion_ancla = posicion_actual
-                    tiempo_inicio_area = time.time()
-                    x1, x2 = posicion_ancla.x - self.tolerancia, posicion_ancla.x + self.tolerancia
-                    y1, y2 = posicion_ancla.y - self.tolerancia, posicion_ancla.y + self.tolerancia
+                    # Si el cursor se mueve, reinicia el área
+                    pos_anchor = current_pos
+                    time_anchor = time.time()
+                    x1, x2 = pos_anchor.x - self.tolerancia, pos_anchor.x + self.tolerancia
+                    y1, y2 = pos_anchor.y - self.tolerancia, pos_anchor.y + self.tolerancia
+               
                 time.sleep(0.1)
+               
         except Exception as e:
-            print(f"Ocurrió un error en el hilo del monitor de clics: {e}")
-        print("\nEl monitoreo de clics ha terminado.")
+            self.status_updated.emit(f"Error en ClickWorker: {e}")
+       
+        self.status_updated.emit("Monitoreo de clics detenido.")
 
     def stop(self):
-        """Detiene el bucle en el hilo."""
-        self.running = False
+        """
+        Método para detener el bucle del worker de forma segura.
+        """
+        self.status_updated.emit("Recibida señal para detener.")
+        self._is_running = False

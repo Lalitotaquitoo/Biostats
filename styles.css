@@ -62,7 +62,7 @@ QWidget{
     color: #1E1E1E;
     font-family: 'Krona One', sans-serif;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .config_button:hover {

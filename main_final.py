@@ -50,22 +50,29 @@ class Configure_window(QWidget):
         layout.addWidget(self.label, 0, 1)
 
         # --- Asistente ---
-        self.speed_label = QLabel("Asistente :")
-        self.speed_label.setProperty("class", "h2_label")
-        layout.addWidget(self.speed_label, 1, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.asistent_label = QLabel("Asistente :")
+        self.asistent_label.setProperty("class", "h2_label")
+        layout.addWidget(self.asistent_label, 1, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        speed_buttons_layout = QHBoxLayout()
-        speed_buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        asistent_button_layout = QHBoxLayout()
+        asistent_button_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.speed_button1 = QPushButton("Echo Dot")
-        self.speed_button1.setProperty("class", "config_button")
-        speed_buttons_layout.addWidget(self.speed_button1)
+        self.asistent_button1 = QPushButton(QIcon('assets/config_window/alexa.png'), "")
+        self.asistent_button1.setIconSize(QSize(120, 120))
+        self.asistent_button1.setFixedSize(200, 150)
+        self.asistent_button1.setProperty("class", "config_button")
+        asistent_button_layout.addWidget(self.asistent_button1)
 
-        self.speed_button2 = QPushButton("Alexa")
-        self.speed_button2.setProperty("class", "config_button")
-        speed_buttons_layout.addWidget(self.speed_button2)
+        self.asistent_button2 = QToolButton()
+        self.asistent_button2.setText("Echo Dot")
+        self.asistent_button2.setIcon(QIcon('assets/config_window/echo.png'))
+        self.asistent_button2.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+        self.asistent_button2.setIconSize(QSize(95, 95))
+        self.asistent_button2.setFixedSize(200, 150)
+        self.asistent_button2.setProperty("class", "config_button")
+        asistent_button_layout.addWidget(self.asistent_button2)
 
-        layout.addLayout(speed_buttons_layout, 2, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addLayout(asistent_button_layout, 2, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # --- Modo Oscuro ---
         self.dark_model_label = QLabel("Modo Oscuro:")
@@ -103,7 +110,7 @@ class Configure_window(QWidget):
         self.Obj_detection_on_button.setProperty("class", "config_button")
         obj_buttons_layout.addWidget(self.Obj_detection_on_button)
 
-        self.Obj_detection_off_button = QPushButton(QIcon('assets/config_window/obj_detection_off.png'), "")
+        self.Obj_detection_off_button = QPushButton(QIcon('assets/config_window/no_detection.png'), "")
         self.Obj_detection_off_button.setIconSize(QSize(120, 120))
         self.Obj_detection_off_button.setFixedSize(200, 150)
         self.Obj_detection_off_button.setProperty("class", "config_button")
@@ -159,13 +166,13 @@ class Light_window(QWidget):
         self.on_button = QPushButton("Encender")
         self.on_button.setFixedSize(400, 250)
         self.on_button.setProperty("class", "ligth_button")
-        self.on_button.clicked.connect(lambda: self.hablar_signal.emit("Alexa, enciende el foco"))
+        self.on_button.clicked.connect(lambda: self.hablar_signal.emit("Alexa enciende,  el foco"))
         layout.addWidget(self.on_button, 1, 0)
 
         self.off_button = QPushButton("Apagar")
         self.off_button.setFixedSize(400, 250)
         self.off_button.setProperty("class", "ligth_button")
-        self.off_button.clicked.connect(lambda: self.hablar_signal.emit("Alexa, apaga el foco"))
+        self.off_button.clicked.connect(lambda: self.hablar_signal.emit("Alexa apaga, el foco"))
         layout.addWidget(self.off_button, 1, 1)
 
         self.intensity_label = QLabel("Intensidad")
@@ -308,19 +315,22 @@ class Emergency_window(QWidget):
         self.label.setProperty("class", "h1_label")
         layout.addWidget(self.label, 0, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
         
-        self.call_button1 = QPushButton("Llamar a Emergencias")
+        self.call_button1 = QPushButton(QIcon('assets/emergency/emergency_call.png'), "")
+        self.call_button1.setIconSize(QSize(100, 100))
         self.call_button1.setFixedSize(400, 200)
         self.call_button1.setProperty("class", "emergency_button")
         self.call_button1.clicked.connect(lambda: self.hablar_signal.emit("Alexa, llama a emergencias"))
         layout.addWidget(self.call_button1, 1, 0)
 
-        self.call_button2 = QPushButton("Llama a David")
+        self.call_button2 = QPushButton(QIcon('assets/emergency/inaoe.png'), "")
+        self.call_button2.setIconSize(QSize(100, 100))
         self.call_button2.setFixedSize(400, 200)
         self.call_button2.setProperty("class", "emergency_button")
-        self.call_button2.clicked.connect(lambda: self.hablar_signal.emit("Alexa, llama a siete dosss dosss cuatroo seiss cuatrohh cerohh tress seisss nueveehh"))
+        self.call_button2.clicked.connect(lambda: self.hablar_signal.emit("Alexa, llama a David Carmona"))
         layout.addWidget(self.call_button2, 1, 1)
 
-        self.call_button3 = QPushButton("Contactar Familiar")
+        self.call_button3 = QPushButton(QIcon('assets/emergency/person_icon.png'), "")
+        self.call_button3.setIconSize(QSize(100, 100))
         self.call_button3.setFixedSize(400, 200)
         self.call_button3.setProperty("class", "emergency_button")
         self.call_button3.clicked.connect(lambda: self.hablar_signal.emit("Alexa, llama a mi familiar"))
@@ -613,26 +623,30 @@ class Domotica_window(QWidget):
         domotica_layout = QGridLayout()
         domotica_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.light_button = QPushButton("Luz")
-        self.light_button.setFixedSize(600, 400)
+        self.light_button = QPushButton(QIcon('assets/foco/spo_tlight.png'), "")
+        self.light_button.setIconSize(QSize(100, 100))
+        self.light_button.setFixedSize(300, 250)
         self.light_button.setProperty("class", "domotica_button")
         self.light_button.clicked.connect(self.open_ligth)
         domotica_layout.addWidget(self.light_button, 0, 0)
 
-        self.yt_button = QPushButton("YouTube")
-        self.yt_button.setFixedSize(600, 400)
+        self.yt_button = QPushButton(QIcon('assets/yt/yt_icon.png'), "")
+        self.yt_button.setIconSize(QSize(80, 80))
+        self.yt_button.setFixedSize(300, 250)
         self.yt_button.setProperty("class", "domotica_button")
         self.yt_button.clicked.connect(self.open_yt)
         domotica_layout.addWidget(self.yt_button, 0, 1)
 
-        self.emergency_button = QPushButton("Emergencia")
-        self.emergency_button.setFixedSize(600, 400)
+        self.emergency_button = QPushButton(QIcon('assets/phone_call/phone.png'), "")
+        self.emergency_button.setIconSize(QSize(80, 80))
+        self.emergency_button.setFixedSize(300, 250)
         self.emergency_button.setProperty("class", "domotica_button")
         self.emergency_button.clicked.connect(self.open_emergency)
         domotica_layout.addWidget(self.emergency_button, 1, 0)
 
-        self.weather_button = QPushButton("Clima")
-        self.weather_button.setFixedSize(600, 400)
+        self.weather_button = QPushButton(QIcon('assets/weather_time/time-and-weather.svg'), "")
+        self.weather_button.setIconSize(QSize(100, 100))
+        self.weather_button.setFixedSize(300, 250)
         self.weather_button.setProperty("class", "domotica_button")
         self.weather_button.clicked.connect(self.open_weather)
         domotica_layout.addWidget(self.weather_button, 1, 1)
@@ -676,15 +690,19 @@ class MainWindow(QMainWindow):
         window_width = screen_width
         window_height = int(screen_height * 0.70)
 
-        self.setGeometry(0, 250, window_width, window_height)
-
-        
-        # --- Hilo para detectar doble clic ---
         self.click_thread = QThread()
-        self.click_worker = ClickWorker(tiempo_espera=2, tolerancia=20)
+        # Se añade el nuevo parámetro 'duracion_sostenido'
+        self.click_worker = ClickWorker(tiempo_espera=2, duracion_sostenido=3, tolerancia=20)
+       
         self.click_worker.moveToThread(self.click_thread)
         self.click_thread.started.connect(self.click_worker.run)
+       
+        # (Opcional) Conecta la nueva señal para ver los mensajes en la consola
+        self.click_worker.status_updated.connect(print)
+       
         self.click_thread.start()
+
+        self.setGeometry(0, 250, window_width, window_height)
 
         # --- Layout de la ventana principal ---
         central_widget = QWidget()
