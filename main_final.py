@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QGridLayout, 
-                             QWidget, QPushButton, QVBoxLayout, QToolButton)
+                             QWidget, QPushButton, QVBoxLayout, QToolButton, QHBoxLayout)
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize, pyqtSlot
 from PyQt6.QtGui import QPixmap, QImage, QIcon
 
@@ -28,7 +28,7 @@ class Configure_window(QWidget):
         layout.setSpacing(0)
         self.setLayout(layout)
 
-        # --- Header ---
+                # --- Header ---
         self.back_button = QPushButton(QIcon('assets/header/back.png'), "")
         self.back_button.setIconSize(QSize(60, 60))
         self.back_button.setFixedSize(100, 80)
@@ -36,56 +36,72 @@ class Configure_window(QWidget):
         self.back_button.clicked.connect(self.close)
         layout.addWidget(self.back_button, 0, 0, alignment=Qt.AlignmentFlag.AlignLeft)
 
-        self.label = QLabel("Configuración del Movimiento")
+        self.label = QLabel("       Configuración del Movimiento")
         self.label.setProperty("class", "h1_label")
-        layout.addWidget(self.label, 0, 1, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.label, 0, 1)
 
-        # --- Velocidad ---
-        self.speed_label = QLabel("Velocidad:")
+        # --- Asistente ---
+        self.speed_label = QLabel("Asistente :")
         self.speed_label.setProperty("class", "h2_label")
         layout.addWidget(self.speed_label, 1, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        self.speed_button1 = QPushButton("Lenta")
+        speed_buttons_layout = QHBoxLayout()
+        speed_buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.speed_button1 = QPushButton("Echo Dot")
         self.speed_button1.setProperty("class", "config_button")
-        layout.addWidget(self.speed_button1, 2, 0)
+        speed_buttons_layout.addWidget(self.speed_button1)
 
-        self.speed_button2 = QPushButton("Media")
+        self.speed_button2 = QPushButton("Alexa")
         self.speed_button2.setProperty("class", "config_button")
-        layout.addWidget(self.speed_button2, 2, 1)
+        speed_buttons_layout.addWidget(self.speed_button2)
 
-        self.speed_button3 = QPushButton("Rápida")
-        self.speed_button3.setProperty("class", "config_button")
-        layout.addWidget(self.speed_button3, 2, 2)
+        layout.addLayout(speed_buttons_layout, 2, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # --- Modo Oscuro ---
         self.dark_model_label = QLabel("Modo Oscuro:")
         self.dark_model_label.setProperty("class", "h2_label")
         layout.addWidget(self.dark_model_label, 3, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
+        dark_buttons_layout = QHBoxLayout()
+        dark_buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.dark_model_on_button = QPushButton(QIcon('assets/config_window/sun.png'), "")
         self.dark_model_on_button.setIconSize(QSize(120, 120))
         self.dark_model_on_button.setFixedSize(200, 150)
         self.dark_model_on_button.setProperty("class", "config_button")
-        layout.addWidget(self.dark_model_on_button, 4, 0, alignment=Qt.AlignmentFlag.AlignCenter)
+        dark_buttons_layout.addWidget(self.dark_model_on_button)
 
         self.dark_model_off_button = QPushButton(QIcon('assets/config_window/moon.png'), "")
         self.dark_model_off_button.setIconSize(QSize(120, 120))
         self.dark_model_off_button.setFixedSize(200, 150)
         self.dark_model_off_button.setProperty("class", "config_button")
-        layout.addWidget(self.dark_model_off_button, 4, 1, alignment=Qt.AlignmentFlag.AlignCenter)
+        dark_buttons_layout.addWidget(self.dark_model_off_button)
+
+        layout.addLayout(dark_buttons_layout, 4, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # --- Detección de Objetos ---
         self.Obj_detection_label = QLabel("Detección de Objetos:")
         self.Obj_detection_label.setProperty("class", "h2_label")
         layout.addWidget(self.Obj_detection_label, 5, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
-        
-        self.Obj_detection_on_button = QPushButton(QIcon('assets/config_window/obj_detection_on.png'), "")
+
+        obj_buttons_layout = QHBoxLayout()
+        obj_buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.Obj_detection_on_button = QPushButton(QIcon('assets/config_window/obj_detec.png'), "")
+        self.Obj_detection_on_button.setIconSize(QSize(120, 120))
+        self.Obj_detection_on_button.setFixedSize(200, 150)
         self.Obj_detection_on_button.setProperty("class", "config_button")
-        layout.addWidget(self.Obj_detection_on_button, 6, 0)
+        obj_buttons_layout.addWidget(self.Obj_detection_on_button)
 
         self.Obj_detection_off_button = QPushButton(QIcon('assets/config_window/obj_detection_off.png'), "")
+        self.Obj_detection_off_button.setIconSize(QSize(120, 120))
+        self.Obj_detection_off_button.setFixedSize(200, 150)
         self.Obj_detection_off_button.setProperty("class", "config_button")
-        layout.addWidget(self.Obj_detection_off_button, 6, 1)
+        obj_buttons_layout.addWidget(self.Obj_detection_off_button)
+
+        layout.addLayout(obj_buttons_layout, 6, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
+
 
 # --------------------------------------------------------------------------- #
 # VENTANAS DE DOMÓTICA (CON FUNCIONALIDAD DE VOZ INTEGRADA)
@@ -370,6 +386,7 @@ class Movement_window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Movimiento")
+        self.setGeometry(100, 100, 800, 600)
         self.current_camera_index = 0
         self.config_window = None
 
@@ -504,7 +521,7 @@ class Movement_window(QWidget):
     def open_config(self):
         if self.config_window is None:
             self.config_window = Configure_window()
-        self.config_window.showFullScreen()
+        self.config_window.show()
 
 # --------------------------------------------------------------------------- #
 # VENTANA: MENÚ DE DOMÓTICA
@@ -562,22 +579,22 @@ class Domotica_window(QWidget):
     def open_ligth(self):
         if self.light_window is None:
             self.light_window = Light_window()
-        self.light_window.showFullScreen()
+        self.light_window.show()
     
     def open_yt(self):
         if self.yt_window is None:
             self.yt_window = YT_window()
-        self.yt_window.showFullScreen()
+        self.yt_window.show()
     
     def open_emergency(self):
         if self.emergency_window is None:
             self.emergency_window = Emergency_window()
-        self.emergency_window.showFullScreen()
+        self.emergency_window.show()
     
     def open_weather(self):
         if self.weather_window is None:
             self.weather_window = Weather_window()
-        self.weather_window.showFullScreen()
+        self.weather_window.show()
 
 # --------------------------------------------------------------------------- #
 # VENTANA PRINCIPAL
@@ -586,6 +603,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sillodromo Lions")
+        self.resize(1000, 600)
         self.setWindowIcon(QIcon('assets/Logo.jpeg'))
         
         # --- Hilo para detectar doble clic ---
@@ -627,12 +645,12 @@ class MainWindow(QMainWindow):
     def open_domotica(self):
         if self.domotica_window is None:
             self.domotica_window = Domotica_window()
-        self.domotica_window.showFullScreen()
+        self.domotica_window.show()
 
     def open_movimiento(self):
         # Siempre crea una nueva instancia para reiniciar los hilos de Arduino y YOLO
         self.movimiento_window = Movement_window()
-        self.movimiento_window.showFullScreen()
+        self.movimiento_window.show()
 
     def closeEvent(self, event):
         print("Cerrando aplicación principal...")
@@ -655,5 +673,5 @@ if __name__ == '__main__':
         print("Advertencia: No se encontró 'styles.css'. Se usarán los estilos por defecto.")
 
     window = MainWindow()
-    window.showMaximized() 
+    window.show() 
     sys.exit(app.exec())
