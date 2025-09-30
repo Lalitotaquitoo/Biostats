@@ -47,14 +47,21 @@ class Configure_window(QWidget):
 
         speed_buttons_layout = QHBoxLayout()
         speed_buttons_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
+        asistente=True
+        if asistente==True:
+            asist= "Alexa"
+        else:
+            asist="Ecoo"
         self.speed_button1 = QPushButton("Echo Dot")
         self.speed_button1.setProperty("class", "config_button")
         speed_buttons_layout.addWidget(self.speed_button1)
+        self.speed_button1.clicked(asistente=False)
+        
 
         self.speed_button2 = QPushButton("Alexa")
         self.speed_button2.setProperty("class", "config_button")
         speed_buttons_layout.addWidget(self.speed_button2)
+        self.speed_button1.clicked(asistente=True)
 
         layout.addLayout(speed_buttons_layout, 2, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -141,7 +148,7 @@ class Light_window(QWidget):
         self.on_button = QPushButton("Encender")
         self.on_button.setFixedSize(400, 250)
         self.on_button.setProperty("class", "ligth_button")
-        self.on_button.clicked.connect(lambda: self.hablar_signal.emit("Alexa, enciende el foco"))
+        self.on_button.clicked.connect(lambda checked, asistente=asist: self.hablar_signal.emit(f"{asistente}, enciende el foco"))
         layout.addWidget(self.on_button, 1, 0)
 
         self.off_button = QPushButton("Apagar")
